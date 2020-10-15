@@ -110,14 +110,14 @@ abstract class ProtobufExtract : DefaultTask() {
         }
     }
 
-    protected fun setDestDir(destDir: File) {
+    fun setDestDir(destDir: File) {
         check(this.destDir == null) { "destDir already set" }
         this.destDir = destDir
         outputs.dir(destDir)
     }
 
     @OutputDirectory
-    protected fun getDestDir(): File? {
+    fun getDestDir(): File? {
         return destDir
     }
 

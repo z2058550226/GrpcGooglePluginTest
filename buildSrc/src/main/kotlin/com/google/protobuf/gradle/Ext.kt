@@ -1,16 +1,22 @@
 package com.google.protobuf.gradle
 
-import groovy.lang.MetaProperty
+import com.android.build.gradle.BaseExtension
+import com.android.build.gradle.api.BaseVariant
 import org.codehaus.groovy.runtime.InvokerHelper
+import org.gradle.api.Project
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.util.*
 
+// Project
+
+val Project.android: BaseExtension get() = extensions.getByName("android") as BaseExtension
+
 // groovy
 
-fun Any.hasMetaProperty(name: String): Boolean {
+fun BaseVariant.hasMetaProperty(name: String): Boolean {
     return InvokerHelper.getMetaClass(this).hasProperty(this, name) != null
 }
 

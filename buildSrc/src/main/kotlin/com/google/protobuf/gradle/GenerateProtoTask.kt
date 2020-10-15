@@ -264,7 +264,7 @@ abstract class GenerateProtoTask : DefaultTask() {
     }
 
     @Internal("Not an actual input to the task, only used to find tasks belonging to a variant")
-    fun getVariant(): Any {
+    fun getVariant(): BaseVariant {
         return variant ?: throw NullPointerException("variant is not set")
     }
 
@@ -514,7 +514,7 @@ abstract class GenerateProtoTask : DefaultTask() {
      * Used to expose inputs to Gradle, not to be called directly.
      */
     @Nested
-    protected fun getDescriptorSetOptionsForCaching(): DescriptorSetOptions? {
+    fun getDescriptorSetOptionsForCaching(): DescriptorSetOptions? {
         return if (generateDescriptorSet) descriptorSetOptions else null
     }
 
@@ -522,7 +522,7 @@ abstract class GenerateProtoTask : DefaultTask() {
      * Used to expose inputs to Gradle, not to be called directly.
      */
     @Nested
-    protected fun getBuiltinsForCaching(): Collection<PluginOptions> {
+    fun getBuiltinsForCaching(): Collection<PluginOptions> {
         return builtins
     }
 
@@ -530,7 +530,7 @@ abstract class GenerateProtoTask : DefaultTask() {
      * Used to expose inputs to Gradle, not to be called directly.
      */
     @Nested
-    protected fun getPluginsForCaching(): Collection<PluginOptions> {
+    fun getPluginsForCaching(): Collection<PluginOptions> {
         return plugins
     }
 
@@ -563,7 +563,7 @@ abstract class GenerateProtoTask : DefaultTask() {
         }
     }
 
-    protected fun computeExecutablePath(locator: ExecutableLocator): String {
+    fun computeExecutablePath(locator: ExecutableLocator): String {
         locator.path?.let { path ->
             return if (path.endsWith(JAR_SUFFIX)) createJarTrampolineScript(path) else path
         }

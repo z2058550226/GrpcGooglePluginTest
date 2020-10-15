@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins{
     `kotlin-dsl`
-    kotlin("jvm") version "1.4.10"
+//    kotlin("jvm") version "1.4.10"
 }
 
 repositories {
@@ -14,8 +14,9 @@ dependencies{
     implementation(gradleApi())
     implementation("com.android.tools.build:gradle:4.0.2")
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.10")
-    implementation(kotlin("stdlib-jdk8"))
-
+    compileOnly(kotlin("stdlib-jdk8"))
+    compileOnly(gradleKotlinDsl())
+    compileOnly(kotlin("reflect"))
     implementation("com.google.gradle:osdetector-gradle-plugin:1.6.2")
 }
 
