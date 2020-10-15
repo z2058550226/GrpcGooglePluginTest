@@ -7,21 +7,32 @@ class ExecutableLocator(private val name: String) : Named {
         return name
     }
 
-    var artifact: String? = null
-        /**
-         * Specifies an artifact spec for downloading the executable from
-         * repositories. spec format: '<groupId>:<artifactId>:<version>'
-         */
-        set(value) {
-            field = value
-            path = null
-        }
-    var path: String? = null
-        /**
-         * Specifies a local path.
-         */
-        set(value) {
-            field = value
-            artifact = null
-        }
+    private var artifact: String? = null
+
+    private var path: String? = null
+
+    /**
+     * Specifies an artifact spec for downloading the executable from
+     * repositories. spec format: '<groupId>:<artifactId>:<version>'
+     */
+    fun setArtifact(artifact: String?) {
+        this.artifact = artifact
+        path = null
+    }
+
+    fun getArtifact(): String? {
+        return artifact
+    }
+
+    /**
+     * Specifies a local path.
+     */
+    fun setPath(path: String?) {
+        this.path = path
+        artifact = null
+    }
+
+    fun getPath(): String? {
+        return path
+    }
 }

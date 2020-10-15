@@ -20,8 +20,8 @@ class ToolsLocator(private val project: Project) {
         }
     }
 
-    private val protoc: ExecutableLocator = ExecutableLocator("protoc")
-    private val plugins: NamedDomainObjectContainer<ExecutableLocator> =
+    val protoc: ExecutableLocator = ExecutableLocator("protoc")
+    val plugins: NamedDomainObjectContainer<ExecutableLocator> =
         project.container(ExecutableLocator::class.java)
 
     /**
@@ -32,16 +32,16 @@ class ToolsLocator(private val project: Project) {
      * spec, downloads the artifact, and point to the local path.
      */
     fun registerTaskDependencies(protoTasks: Collection<GenerateProtoTask>) {
-        if (protoc.artifact != null) {
+        if (protoc.getArtifact() != null) {
             registerDependencyWithTasks(protoc, protoTasks)
-        } else if (protoc.path == null) {
-            protoc.path = "protoc"
+        } else if (protoc.getPath() == null) {
+            protoc.setPath("protoc")
         }
         for (pluginLocator in plugins) {
-            if (pluginLocator.artifact != null) {
+            if (pluginLocator.getArtifact() != null) {
                 registerDependencyWithTasks(pluginLocator, protoTasks)
-            } else if (pluginLocator.path == null) {
-                pluginLocator.path = "protoc-gen-${pluginLocator.name}"
+            } else if (pluginLocator.getPath() == null) {
+                pluginLocator.setPath("protoc-gen-${pluginLocator.name}")
             }
         }
     }
@@ -57,7 +57,7 @@ class ToolsLocator(private val project: Project) {
                 isTransitive = false
                 setExtendsFrom(ArrayList())
             }
-        val (groupId, artifact, version, classifier, extension) = artifactParts(locator.artifact!!)
+        val (groupId, artifact, version, classifier, extension) = artifactParts(locator.getArtifact()!!)
         val notation: Map<String, String> = mapOf(
             "group" to groupId!!,
             "name" to artifact!!,

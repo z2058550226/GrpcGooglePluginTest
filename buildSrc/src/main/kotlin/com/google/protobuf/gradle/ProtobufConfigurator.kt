@@ -2,13 +2,17 @@ package com.google.protobuf.gradle
 
 import org.gradle.api.Project
 import org.gradle.api.tasks.TaskCollection
-
-private typealias Closure = Any.() -> Unit
+import groovy.lang.Closure
+import org.gradle.api.NamedDomainObjectContainer
+import org.gradle.kotlin.dsl.NamedDomainObjectContainerScope
+import org.gradle.kotlin.dsl.closureOf
+import org.gradle.kotlin.dsl.invoke
+import org.gradle.util.ConfigureUtil
 
 class ProtobufConfigurator(private val project: Project) {
     private val tasks: GenerateProtoTaskCollection = AndroidGenerateProtoTaskCollection()
     private val tools = ToolsLocator(project)
-    private val taskConfigClosures: ArrayList<Closure> = ArrayList()
+    private val taskConfigClosures: ArrayList<Closure<*>> = ArrayList()
 
     /**
      * The base directory of generated files. The default is
@@ -16,11 +20,11 @@ class ProtobufConfigurator(private val project: Project) {
      */
     val generatedFilesBaseDir = "${project.buildDir}/generated/source/proto"
 
-//    fun runTaskConfigClosures() {
-//        taskConfigClosures.forEach { closure ->
-//            ConfigureUtil.configure(closure, tasks)
-//        }
-//    }
+    fun runTaskConfigClosures() {
+        taskConfigClosures.forEach { closure ->
+            ConfigureUtil.configure(closure, tasks)
+        }
+    }
 
     //===========================================================================
     //         Configuration methods
@@ -30,19 +34,19 @@ class ProtobufConfigurator(private val project: Project) {
      * Locates the protoc executable. The closure will be manipulating an
      * ExecutableLocator.
      */
-    // todo Closure
-//    fun protoc(configureClosure: Closure) {
-//        ConfigureUtil.configure(configureClosure, tools.protoc)
-//    }
+    fun protoc(action: ExecutableLocator.() -> Unit) {
+        ConfigureUtil.configure(closureOf(action), tools.protoc)
+    }
 
     /**
      * Locate the codegen plugin executables. The closure will be manipulating a
      * NamedDomainObjectContainer<ExecutableLocator>.
      */
-    // todo C
-//    fun plugins(configureClosure: Closure) {
-//        ConfigureUtil.configure(configureClosure, tools.plugins)
-//    }
+    fun plugins(action: NamedDomainObjectContainerScope<ExecutableLocator>.() -> Unit) {
+        ConfigureUtil.configure(closureOf<NamedDomainObjectContainer<ExecutableLocator>> {
+            this(action)
+        }, tools.plugins)
+    }
 
     /**
      * Configures the generateProto tasks in the given closure.
@@ -55,8 +59,8 @@ class ProtobufConfigurator(private val project: Project) {
      * change the task in your own afterEvaluate closure, as the change may not
      * be picked up correctly by the wired javaCompile task.
      */
-    fun generateProtoTasks(configureClosure: Closure) {
-        taskConfigClosures.add(configureClosure)
+    fun generateProtoTasks(action: ProtobufConfigurator.GenerateProtoTaskCollection.()->Unit) {
+        taskConfigClosures.add(closureOf(action))
     }
 
     /**

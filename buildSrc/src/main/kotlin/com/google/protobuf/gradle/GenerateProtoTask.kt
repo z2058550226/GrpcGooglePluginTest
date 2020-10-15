@@ -14,6 +14,10 @@ import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.*
+import org.gradle.kotlin.dsl.NamedDomainObjectContainerScope
+import org.gradle.kotlin.dsl.closureOf
+import org.gradle.kotlin.dsl.invoke
+import org.gradle.util.ConfigureUtil
 import java.io.File
 import java.io.IOException
 import java.nio.charset.StandardCharsets.US_ASCII
@@ -328,10 +332,12 @@ abstract class GenerateProtoTask : DefaultTask() {
      * Configures the protoc builtins in a closure, which will be manipulating a
      * NamedDomainObjectContainer<PluginOptions>.
      */
-//    fun builtins(configureClosure: Closure) {
-//        checkCanConfig()
-//        ConfigureUtil.configure(configureClosure, builtins)
-//    }
+    fun builtins(action: NamedDomainObjectContainerScope<PluginOptions>.() -> Unit) {
+        checkCanConfig()
+        ConfigureUtil.configure(closureOf<NamedDomainObjectContainer<PluginOptions>> {
+            this(action)
+        }, builtins)
+    }
 
     /**
      * Returns the container of protoc builtins.
@@ -346,11 +352,12 @@ abstract class GenerateProtoTask : DefaultTask() {
      * Configures the protoc plugins in a closure, which will be maniuplating a
      * NamedDomainObjectContainer<PluginOptions>.
      */
-//    fun plugins(Closure configureClosure)
-//    {
-//        checkCanConfig()
-//        ConfigureUtil.configure(configureClosure, plugins)
-//    }
+    fun plugins(action: NamedDomainObjectContainerScope<PluginOptions>.() -> Unit) {
+        checkCanConfig()
+        ConfigureUtil.configure(closureOf<NamedDomainObjectContainer<PluginOptions>> {
+            this(action)
+        }, plugins)
+    }
 
     /**
      * Returns the container of protoc plugins.
@@ -564,7 +571,7 @@ abstract class GenerateProtoTask : DefaultTask() {
     }
 
     fun computeExecutablePath(locator: ExecutableLocator): String {
-        locator.path?.let { path ->
+        locator.getPath()?.let { path ->
             return if (path.endsWith(JAR_SUFFIX)) createJarTrampolineScript(path) else path
         }
         val file: File =

@@ -1,4 +1,4 @@
-import com.google.protobuf.gradle.protobuf
+import com.google.protobuf.gradle.id
 
 plugins {
     id("com.android.application")
@@ -30,6 +30,33 @@ dependencies {
 //    protobuf("")
 }
 
-protobuf {
+val grpcVersion = "1.24.0"
+protobuf.protobuf.run {
+    protoc {
+        setArtifact("com.google.protobuf:protoc:3.10.0")
+    }
 
+    plugins {
+        id("javalite") {
+            setArtifact("com.google.protobuf:protoc-gen-javalite:3.0.0")
+        }
+        id("grpc") { setArtifact("io.grpc:protoc-gen-grpc-java:$grpcVersion") }
+    }
+
+    generateProtoTasks {
+        all().forEach {
+            it.builtins {
+                //  remove("java")
+            }
+
+            it.plugins {
+                create("javalite") {
+                    outputSubDir = "java"
+                }
+                create("grpc") {
+                    option("lite")
+                }
+            }
+        }
+    }
 }
