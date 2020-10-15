@@ -1,4 +1,4 @@
-package com.google.protobuf.gradle
+package com.bybutter.protobuf.gradle
 
 import org.gradle.api.Project
 import org.gradle.api.tasks.TaskCollection
@@ -59,7 +59,7 @@ class ProtobufConfigurator(private val project: Project) {
      * change the task in your own afterEvaluate closure, as the change may not
      * be picked up correctly by the wired javaCompile task.
      */
-    fun generateProtoTasks(action: ProtobufConfigurator.GenerateProtoTaskCollection.()->Unit) {
+    fun generateProtoTasks(action: GenerateProtoTaskCollection.()->Unit) {
         taskConfigClosures.add(closureOf(action))
     }
 

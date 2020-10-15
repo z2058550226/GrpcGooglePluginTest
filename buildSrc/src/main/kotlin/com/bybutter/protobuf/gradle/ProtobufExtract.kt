@@ -1,4 +1,4 @@
-package com.google.protobuf.gradle
+package com.bybutter.protobuf.gradle
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.ConfigurableFileCollection

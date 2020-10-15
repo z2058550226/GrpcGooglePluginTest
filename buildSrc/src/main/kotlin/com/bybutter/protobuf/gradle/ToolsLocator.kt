@@ -1,4 +1,4 @@
-package com.google.protobuf.gradle
+package com.bybutter.protobuf.gradle
 
 import com.google.gradle.osdetector.OsDetector
 import org.gradle.api.NamedDomainObjectContainer

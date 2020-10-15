@@ -1,4 +1,4 @@
-package com.google.protobuf.gradle
+package com.bybutter.protobuf.gradle
 
 import com.android.build.gradle.AbstractAppExtension
 import com.android.build.gradle.LibraryExtension

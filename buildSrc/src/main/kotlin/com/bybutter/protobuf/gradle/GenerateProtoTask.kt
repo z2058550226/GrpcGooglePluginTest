@@ -1,4 +1,4 @@
-package com.google.protobuf.gradle
+package com.bybutter.protobuf.gradle
 
 import com.android.build.gradle.api.BaseVariant
 import org.gradle.api.DefaultTask

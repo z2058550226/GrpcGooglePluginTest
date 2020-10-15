@@ -1,4 +1,4 @@
-package com.google.protobuf.gradle
+package com.bybutter.protobuf.gradle
 
 import groovy.lang.Closure
 import org.gradle.api.NamedDomainObjectContainer

@@ -1,4 +1,4 @@
-package com.google.protobuf.gradle
+package com.bybutter.protobuf.gradle
 
 import org.gradle.api.Project
 import org.gradle.api.internal.file.FileResolver
